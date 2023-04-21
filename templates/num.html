@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block content %}
+
+		<!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">房屋大小分析</h1>
+                        <h1 class="page-subhead-line">柱状图 </h1>
+
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                  <div class="col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+
+                        </div>
+                        <div class="panel-body">
+
+
+            <div id="wizardV">
+<!--                <section>-->
+<!--                    <p>2020年全国新增确诊人数前十图</p>-->
+<!--                </section>-->
+<!--                <div id="bar_chart10" style="width:100%;height:400px">-->
+
+<!--                </div>-->
+<!--                第二张图-->
+                <section>
+                    <p>房屋大小分析</p>
+                </section>
+                <div id="main" style="width:100%;height:400px">
+                </div>
+            </div>
+                      </div>
+                  </div>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+
+        <script src="static/assets/js/echarts.min.js"></script>
+        <script type="text/javascript">
+           var chartDom = document.getElementById('main');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+    color:['#2EB7BD'],
+  title: {
+    text: '房屋大小分析',
+    subtext: ''
+  },
+  tooltip: {
+    trigger: 'axis'
+  },
+  legend: {
+    data: ['数量', '大小']
+  },
+  toolbox: {
+    show: true,
+    feature: {
+      dataView: { show: true, readOnly: false },
+      magicType: { show: true, type: ['line', 'bar'] },
+      restore: { show: true },
+      saveAsImage: { show: true }
+    }
+  },
+  calculable: true,
+  xAxis: [
+    {
+      type: 'category',
+      // prettier-ignore
+      data: {{ x_list|tojson }}
+    }
+  ],
+  yAxis: [
+    {
+      type: 'value'
+    }
+  ],
+  series: [
+    {
+      name: '数量',
+      type: 'bar',
+      data: {{ y_list }},
+      markPoint: {
+        data: [
+          { type: 'max', name: 'Max' },
+          { type: 'min', name: 'Min' }
+        ]
+      },
+      markLine: {
+        data: [{ type: 'average', name: 'Avg' }]
+      }
+    }
+  ]
+};
+option && myChart.setOption(option);
+
+        </script>
+
+{% endblock %}

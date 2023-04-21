@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>基于大数据的楼市交易分析可视化系统</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <!--    <link href="static/assets/css/bootstrap.css" rel="stylesheet" />-->
+    <link href="{{ url_for('static',filename='assets/css/bootstrap.css') }}" rel="stylesheet"/>
+
+    <!-- FONTAWESOME STYLES-->
+    <!--    <link href="static/assets/css/font-awesome.css" rel="stylesheet" />-->
+    <link href="{{ url_for('static',filename='assets/css/font-awesome.css') }}" rel="stylesheet"/>
+    <!--CUSTOM BASIC STYLES-->
+    <!--    <link href="static/assets/css/basic.css" rel="stylesheet" />-->
+    <link href="{{ url_for('static',filename='assets/css/basic.css') }}" rel="stylesheet"/>
+    <!--CUSTOM MAIN STYLES-->
+    <!--    <link href="static/assets/css/custom.css" rel="stylesheet" />-->
+    <link href="{{ url_for('static',filename='assets/css/custom.css') }}" rel="stylesheet"/>
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+</head>
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">哇哦n</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('index') }}">功能列表</a>
+
+        </div>
+        <div style="margin-left:85%;margin-top: 20px;font-size: 22px;color: white">
+            <span>欢迎{{ session['uname'] }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_for('logout') }}" style="color: white">退出登录</a>
+        </div>
+    </nav>
+    <nav class="navbar-default navbar-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+
+                <li>
+                    <a class="active-menu" href="{{ url_for('home') }}"><i class="fa fa-dashboard "></i>项目概况</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-desktop "></i>echarts图表<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ url_for('jobCity') }}"><i class="fa fa-toggle-on"></i>随时间的房屋数量</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('world') }}"><i class="fa fa-bell "></i>指定区域房屋数量</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('price') }}"><i class="fa fa-bell "></i>房价随时间变化</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('num') }}"><i class="fa fa-bell "></i>房屋大小分析</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('time') }}"><i class="fa fa-bell "></i>房屋居室分析</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('chaoxiang') }}"><i class="fa fa-bell "></i>房屋朝向分析</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-yelp "></i>词云统计<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ url_for('worldCloud') }}"><i class="fa fa-coffee"></i>词云页</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{ url_for('table',page_num=1) }}"><i class="fa fa-flash "></i>数据列表</a>
+
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bicycle "></i>价格预测 <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ url_for('group') }}"><i class="fa fa-desktop "></i>价格预测</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{ url_for('useredit') }}"><i class="fa fa-bicycle "></i>个人信息管理 </a>
+
+                </li>
+                {% if session['cate']==2 %}
+                    <li>
+                        <a href="{{ url_for('admin_index') }}"><i class="fa fa-bicycle "></i>后台管理系统 </a>
+
+                    </li>
+                {% endif %}
+            </ul>
+
+        </div>
+    </nav>
+
+    <!-- /. NAV SIDE  -->
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-head-line">数据列表</h1>
+                    <h1 class="page-subhead-line">列表</h1>
+
+                </div>
+            </div>
+            <!-- /. ROW  -->
+
+            <div class="row">
+                <form action="/userselect" method="post">
+                    <input name="search_name" id="search_name">
+
+                    <button type="submit">查询</button>
+                </form>
+                <div class="col-md-12">
+                    <!--   Kitchen Sink -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{ male_data|safe }}
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>标题</th>
+                                        <th>总价</th>
+                                        <th>单价</th>
+                                        <th>地址</th>
+                                        <th>城市</th>
+                                        <th>区域</th>
+                                        <th>数量</th>
+                                        <th>大小</th>
+                                        <th>朝向</th>
+                                        <th>建造时间</th>
+                                        <th>标签</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for job in room_list.items %}
+                                        <tr>
+                                            <td>{{ job.id }}</td>
+                                            <td>{{ job.title }}</td>
+                                            <td>{{ job.price_count }}</td>
+                                            <td>{{ job.price }}</td>
+                                            <td>{{ job.xiaoqu }}</td>
+                                            <td>{{ job.city }}</td>
+                                            <td>{{ job.quyu }}</td>
+                                            <td>{{ job.home_num }}</td>
+                                            <td>{{ job.size }}</td>
+                                            <td>{{ job.chaoxiang }}</td>
+                                            <td>{{ job.jianzao }}</td>
+                                            <td>{{ job.tags }}</td>
+                                            <td>
+                                                <button onclick="collect({{ job.id }})" class="collect-button">收藏
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <!--                                分页-->
+                                {% if not search_name %}
+                                    {% for page in room_list.iter_pages() %}
+                                        {% if page %}
+                                            <a href="{{ url_for('table',page_num=page) }}">&nbsp;&nbsp;{{ page }}&nbsp;&nbsp;</a>
+                                        {% else %}
+                                            ...
+
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End  Kitchen Sink -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /. PAGE INNER  -->
+</div>
+<!-- /. PAGE WRAPPER  -->
+</div>
+<!-- /. WRAPPER  -->
+<div id="footer-sec">
+    &copy; 2014 YourCompany | More Templates <a href="https://www.webmoban.net" target="_blank" title="网站模板">58</a>
+    -
+    Collect from
+</div>
+<!-- /. FOOTER  -->
+<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+<!-- JQUERY SCRIPTS -->
+<!--    <script src="static/assets/js/jquery-1.10.2.js"></script>-->
+<script src="{{ url_for('static',filename='assets/js/jquery-1.10.2.js') }}"></script>
+<!-- BOOTSTRAP SCRIPTS -->
+<!--    <script src="static/assets/js/bootstrap.js"></script>-->
+<script src="{{ url_for('static',filename='assets/js/bootstrap.js') }}"></script>
+<!-- METISMENU SCRIPTS -->
+<!--    <script src="static/assets/js/jquery.metisMenu.js"></script>-->
+<script src="{{ url_for('static',filename='assets/js/jquery.metisMenu.js') }}"></script>
+<!-- CUSTOM SCRIPTS -->
+<!--    <script src="static/assets/js/custom.js"></script>-->
+<script src="{{ url_for('static',filename='assets/js/custom.js') }}"></script>
+<script>
+    function collect(fangwu_id) {
+        $.ajax({                                    // 使用Ajax异步提交
+            url: "{{ url_for('collect_add') }}", // 提交到的URL
+            type: "GET",                            // 提交方式为GET
+            data: {fangwu_id: fangwu_id},            // 传递参数
+            dataType: "json",                       // 数据类型为json
+            success: function (res) {               // 操作成功后执行逻辑
+                if (res.ok == 1) {
+                    alert("收藏成功！"); // 显示弹出层信息
+                    // 填充文字
+                } else {
+                    alert("您已收藏");   // 提示已收藏
+                }
+            }
+        })
+    }
+</script>
+
+</body>
+</html>

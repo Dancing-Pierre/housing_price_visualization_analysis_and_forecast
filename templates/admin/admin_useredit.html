@@ -1,0 +1,86 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">用户信息修改</h1>
+                        <h1 class="page-subhead-line"></h1>
+
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                <!-- /. ROW  -->
+
+                <div class="form_text_ipt">
+								<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%;transform: translateX(180%);" name="username" id='username' type="text" placeholder="用户名" value="{{user1.username}}">
+                    <input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%;transform: translateX(180%);" name="userid" id='userid' type="hidden"  value="{{user1.id}}">
+							</div>
+							<div class="form_text_ipt">
+								<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%;transform: translateX(180%);" name="password" id='password' type="text" placeholder="密码" value="{{user1.password}}">
+							</div>
+                            <div class="form_text_ipt">
+								<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%;transform: translateX(180%);" name="age" id='age' type="text" placeholder="年龄" value="{{user1.age}}">
+							</div>
+                            <div class="form_text_ipt">
+								<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%;transform: translateX(180%);" name="email" id='email' type="text" placeholder="邮箱" value="{{user1.email}}">
+							</div>
+                            <div style="position: relative">
+								<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%;transform: translateX(180%);" name="info" id='info' type="text" placeholder="简介" value="{{user1.info}}">
+							</div>
+							<div class="form_btn">
+								<button onclick="register()"  style="width: 250px;height: 40px;background-color: #5cb85c;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;color: white;left: 100%;transform: translateX(300%);
+                                ">修改</button>							</div>
+                <!-- /. ROW  -->
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+<script>
+	function register() {
+    let username = $("#username").val();
+    let userid = $("#userid").val();
+    let password = $("#password").val();
+    let age = $("#age").val();
+    let email = $("#email").val();
+    let info = $("#info").val();
+
+
+    if (username != '') {
+        postLibraryCard(userid,username, password, age, email, info);
+    } else {
+        alert("用户名不能为空");
+    }
+}
+
+function postLibraryCard(userid,username, password, age, email, info) {
+    $.ajax({
+        url: '/admin_usereditapi',
+        type: 'POST',
+        data: {
+            username: username,
+            userid: userid,
+            password: password,
+            age: age,
+            email: email,
+            info: info,
+        },
+        dataType: 'json',
+
+        success: function (data) {
+            rents = data.id;
+            if (rents == true){
+                alert("修改成功");
+                parent.location.href='/admin_user'
+            }else{
+                alert("修改失败");
+            }
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+</script>
+        <!-- /. PAGE WRAPPER  -->
+{% endblock %}

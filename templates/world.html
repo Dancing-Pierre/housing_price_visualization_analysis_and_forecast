@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block content %}
+
+		<!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">指定区域房屋数量和区域均价</h1>
+                        <h1 class="page-subhead-line">饼图、柱状图 </h1>
+
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                  <div class="col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                            指定区域房屋数量
+                        </div>
+                        <div class="panel-body" style="height: 450px">
+
+
+            <div id="wizardV">
+                <section>
+                    <p>指定区域房屋数量</p>
+                </section>
+
+            </div>
+                                            <div id="pie_chart20" style="width:100%;height:450px">
+                </div>
+                      </div>
+                  </div>
+                       <div class="panel panel-default">
+                        <div class="panel-heading">
+                            指定区域二手房均价
+                        </div>
+                        <div class="panel-body" style="height: 450px">
+
+                                            <div id="bar_chart1" style="width:100%;height:450px">
+                </div>
+                      </div>
+                  </div>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <!-- /. WRAPPER  -->
+
+        <script src="static/assets/js/echarts.min.js"></script>
+
+        <script type="text/javascript">
+        var chartDom = document.getElementById('pie_chart20');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+            title: {
+                text: '指定区域房屋数量',
+                subtext: '58同城',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+            },
+            series: [
+                {
+                    name: '房屋数量',
+                    type: 'pie',
+                    radius: '80%',
+                    data: [
+                        {% for item in list: %}
+                                {value: '{{item[1]}}',name: '{{item[0]}}' },
+                            {% endfor %}
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+
+        </script>
+    <script type="text/javascript">
+            var chartDom = document.getElementById('bar_chart1');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            option = {
+
+                xAxis: {
+                    type: 'category',
+                    data: {{qy_list|tojson}}
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: {{mean|tojson}},
+                    type: 'bar'
+                }]
+            };
+
+            option && myChart.setOption(option);
+
+
+       </script>
+    {% endblock %}

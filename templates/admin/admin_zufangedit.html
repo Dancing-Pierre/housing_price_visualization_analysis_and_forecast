@@ -1,0 +1,104 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">房产信息修改</h1>
+                        <h1 class="page-subhead-line"></h1>
+
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                <!-- /. ROW  -->
+
+
+                <div class="form_text_ipt">
+							标题:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="title" id='title' type="text" placeholder="标题" value="{{fangwu1.title}}">
+                    <input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="fangwuid" id='fangwuid' type="hidden"  value="{{fangwu1.id}}">
+							</div>
+							<div class="form_text_ipt">
+							总价:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="price_count" id='price_count' type="text" placeholder="总价" value="{{fangwu1.price_count}}">
+							</div>
+                            <div class="form_text_ipt">
+							单价:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="price" id='price' type="text" placeholder="单价" value="{{fangwu1.price}}">
+							</div>
+                            <div class="form_text_ipt">
+							地址:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="xiaoqu" id='xiaoqu' type="text" placeholder="地址" value="{{fangwu1.xiaoqu}}">
+							</div>
+                            <div style="position: relative">
+							区域:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="quyu" id='quyu' type="text" placeholder="区域" value="{{fangwu1.quyu}}">
+							</div>
+                            <div style="position: relative">
+							数量:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="home_num" id='home_num' type="text" placeholder="数量" value="{{fangwu1.home_num}}">
+							</div>
+                             <div style="position: relative">
+								大小:<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="size" id='size' type="text" placeholder="大小" value="{{fangwu1.size}}">
+							</div>
+                                             <div style="position: relative">
+							朝向:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="chaoxiang" id='chaoxiang' type="text" placeholder="朝向" value="{{fangwu1.chaoxiang}}">
+							</div>
+                            <div style="position: relative">
+							标签:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="tags" id='tags' type="text" placeholder="标签" value="{{fangwu1.tags}}">
+							</div>
+                                            <div style="position: relative">
+							建造时间:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="jianzao" id='jianzao' type="text" placeholder="建造时间" value="{{fangwu1.jianzao}}">
+							</div>
+							<div class="form_btn">
+								<button onclick="register()"  style="width: 250px;height: 40px;background-color: #5cb85c;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;color: white;left: 100%;transform: translateX(300%);
+                                ">修改</button>							</div>
+                <!-- /. ROW  -->
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+<script>
+	function register() {
+    let address = $("#address").val();
+    let title = $("#title").val();
+    let fangwuid = $("#fangwuid").val();
+    let size = $("#size").val();
+    let chaoxiang = $("#chaoxiang").val();
+    let jushi = $("#jushi").val();
+    let price = $("#price").val();
+    let name = $("#name").val();
+    if (title != '') {
+        postLibraryCard(fangwuid,title, address, size, chaoxiang, jushi, price, name);
+    } else {
+        alert("标题不能为空");
+    }
+}
+
+function postLibraryCard(fangwuid,title, address, size, chaoxiang, jushi, price, name) {
+    $.ajax({
+        url: '/admin_zufangeditapi',
+        type: 'POST',
+        data: {
+            title: title,
+            address: address,
+            size: size,
+            chaoxiang: chaoxiang,
+            jushi: jushi,
+            price: price,
+            name: name,
+            fangwuid: fangwuid,
+        },
+        dataType: 'json',
+
+        success: function (data) {
+            rents = data.id;
+            if (rents == true){
+                alert("修改成功");
+                parent.location.href='/admin_zufang'
+            }else{
+                alert("修改失败");
+            }
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+</script>
+        <!-- /. PAGE WRAPPER  -->
+{% endblock %}

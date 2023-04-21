@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+		<!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">房价随时间变化</h1>
+                        <h1 class="page-subhead-line">柱状图 </h1>
+
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                  <div class="col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+
+                        </div>
+                        <div class="panel-body">
+
+
+            <div id="wizardV">
+<!--                <section>-->
+<!--                    <p>2020年全国新增确诊人数前十图</p>-->
+<!--                </section>-->
+<!--                <div id="bar_chart10" style="width:100%;height:400px">-->
+
+<!--                </div>-->
+<!--                第二张图-->
+                <section>
+                    <p>房价随时间变化</p>
+                </section>
+                <div id="bar_chart10" style="width:100%;height:400px">
+                </div>
+            </div>
+                      </div>
+                  </div>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <!-- /. WRAPPER  -->
+
+        <script src="static/assets/js/echarts.min.js"></script>
+        <script type="text/javascript">
+            var chartDom = document.getElementById('bar_chart10');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            option = {
+                xAxis: {
+                    type: 'category',
+                    data: {{ x_list|tojson}}
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: {{ mean}},
+                    type: 'bar',
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(180, 180, 180, 0.2)'
+                    }
+                }]
+            };
+
+            option && myChart.setOption(option);
+
+
+        </script>
+
+{% endblock %}

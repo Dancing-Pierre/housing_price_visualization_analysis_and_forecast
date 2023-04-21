@@ -1,0 +1,107 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">房产信息添加</h1>
+                        <h1 class="page-subhead-line"></h1>
+
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                <!-- /. ROW  -->
+
+
+
+							<div class="form_text_ipt">
+							标题:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="title" id='title' type="text" placeholder="标题" >
+
+							</div>
+							<div class="form_text_ipt">
+							总价:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="price_count" id='price_count' type="text" placeholder="总价" ">
+							</div>
+                            <div class="form_text_ipt">
+							单价:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="price" id='price' type="text" placeholder="单价" >
+							</div>
+                            <div class="form_text_ipt">
+							地址:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="xiaoqu" id='xiaoqu' type="text" placeholder="地址" >
+							</div>
+                            <div style="position: relative">
+							区域:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="quyu" id='quyu' type="text" placeholder="区域" >
+							</div>
+                            <div style="position: relative">
+							数量:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="home_num" id='home_num' type="text" placeholder="数量" >
+							</div>
+                             <div style="position: relative">
+								大小:<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="size" id='size' type="text" placeholder="大小" >
+							</div>
+                                             <div style="position: relative">
+							朝向:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="chaoxiang" id='chaoxiang' type="text" placeholder="朝向" >
+							</div>
+                            <div style="position: relative">
+							标签:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="tags" id='tags' type="text" placeholder="标签" >
+							</div>
+                                            <div style="position: relative">
+							建造时间:	<input style="width: 400px;height: 40px;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;left: 100%" name="jianzao" id='jianzao' type="text" placeholder="建造时间" >
+							</div>
+							<div class="form_btn">
+								<button onclick="register()"  style="width: 250px;height: 40px;background-color: #5cb85c;border-radius: 5px;margin-bottom: 10px;margin-top: 10px;color: white;left: 100%;transform: translateX(300%);
+                                ">添加</button>							</div>
+
+
+                <!-- /. ROW  -->
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+<script>
+	function register() {
+    let address = $("#address").val();
+    let title = $("#title").val();
+    let size = $("#size").val();
+    let chaoxiang = $("#chaoxiang").val();
+    let jushi = $("#jushi").val();
+    let price = $("#price").val();
+    let name = $("#name").val();
+
+
+    if (title != '') {
+        postLibraryCard(title, address, size, chaoxiang, jushi, price, name);
+    } else {
+        alert("标题不能为空");
+    }
+}
+
+function postLibraryCard(title, address, size, chaoxiang, jushi, price, name) {
+    $.ajax({
+        url: '/admin_zufangaddapi',
+        type: 'POST',
+        data: {
+            title: title,
+            address: address,
+            size: size,
+            chaoxiang: chaoxiang,
+            jushi: jushi,
+            price: price,
+            name: name,
+        },
+        dataType: 'json',
+
+        success: function (data) {
+            rents = data.id;
+            if (rents == true){
+                alert("添加成功");
+                parent.location.href='/admin_zufangadd'
+            }else{
+                alert("添加失败");
+            }
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+</script>
+        <!-- /. PAGE WRAPPER  -->
+{% endblock %}

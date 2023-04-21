@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+           
+
+		<!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">随时间的房屋数量</h1>
+                        <h1 class="page-subhead-line">折线图 </h1>
+
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                  <div class="col-md-12">
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Vertical Wizard
+                        </div>
+                        <div class="panel-body">
+
+                            
+            <div id="wizardV">
+                <section>
+                    <p>随时间的房屋数量</p>
+                </section>
+                <div id="bar_chart01" style="width:100%;height:600px">
+
+                </div>
+<!--                第二张图-->
+<!--                <section>-->
+<!--                    <p>招聘人数最多的城市分别是</p>-->
+<!--                </section>-->
+<!--                <div id="pie_chart02" style="width:100%;height:400px">-->
+<!--                </div>-->
+            </div>
+                      </div>
+                  </div>
+            </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <!-- /. WRAPPER  -->
+
+        <script src="static/assets/js/echarts.min.js"></script>
+        <script type="text/javascript">
+            var chartDom = document.getElementById('bar_chart01');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            option = {
+
+                xAxis: {
+                    type: 'category',
+                    data: {{sj_list|tojson}}
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: {{zj_list|tojson}},
+                    type: 'line'
+                }]
+            };
+
+            option && myChart.setOption(option);
+
+
+       </script>
+    {% endblock %}

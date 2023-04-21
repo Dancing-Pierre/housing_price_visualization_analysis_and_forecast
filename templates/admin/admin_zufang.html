@@ -1,0 +1,131 @@
+{% extends 'admin/admin_base.html' %}
+{% block content %}
+    <!-- /. NAV SIDE  -->
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-head-line">房产信息管理</h1>
+                    <h1 class="page-subhead-line"></h1>
+
+                </div>
+            </div>
+            <!-- /. ROW  -->
+            <!-- /. ROW  -->
+            <a href="{{ url_for('admin_zufangadd') }}">添加</a>
+            <form action="/admin_zufangselect" method="post">
+                <input name="search_name" id="search_name">
+
+                <button type="submit">查询</button>
+            </form>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>标题</th>
+                            <th>总价</th>
+                            <th>单价</th>
+                            <th>地址</th>
+                            <th>城市</th>
+                            <th>区域</th>
+                            <th>数量</th>
+                            <th>大小</th>
+                            <th>朝向</th>
+                            <th>建造时间</th>
+                            <th>标签</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if not search_name %}
+                            {% for room in room_list.items %}
+                                <tr>
+                                    <td>{{ room.id }}</td>
+                                    <td>{{ room.title }}</td>
+                                    <td>{{ room.price_count }}</td>
+                                    <td>{{ room.price }}</td>
+                                    <td>{{ room.xiaoqu }}</td>
+                                    <td>{{ room.city }}</td>
+                                    <td>{{ room.quyu }}</td>
+                                    <td>{{ room.home_num }}</td>
+                                    <td>{{ room.size }}</td>
+                                    <td>{{ room.chaoxiang }}</td>
+                                    <td>{{ room.jianzao }}</td>
+                                    <td>{{ room.tags }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin_zufangedit',room_id=room.id) }}">编辑</a>
+                                        <a href="javascript:void(0)" onclick="roomdel({{ room.id }})">删除</a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            {% for room in room_list %}
+                                <tr>
+                                    <td>{{ room.id }}</td>
+                                    <td>{{ room.title }}</td>
+                                    <td>{{ room.price_count }}</td>
+                                    <td>{{ room.price }}</td>
+                                    <td>{{ room.xiaoqu }}</td>
+                                    <td>{{ room.city }}</td>
+                                    <td>{{ room.quyu }}</td>
+                                    <td>{{ room.home_num }}</td>
+                                    <td>{{ room.size }}</td>
+                                    <td>{{ room.chaoxiang }}</td>
+                                    <td>{{ room.jianzao }}</td>
+                                    <td>{{ room.tags }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin_zufangedit',room_id=room.id) }}">编辑</a>
+                                        <a href="javascript:void(0)" onclick="roomdel({{ room.id }})">删除</a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        {% endif %}
+                    </table>
+                    <!--                                分页-->
+                    {% if not search_name %}
+                        {% for page in room_list.iter_pages() %}
+                            {% if page %}
+                                <a href="{{ url_for('admin_zufang',page_num=page) }}">&nbsp;&nbsp;{{ page }}&nbsp;&nbsp;</a>
+                            {% else %}
+                                ...
+
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <!-- /. ROW  -->
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <script type="text/javascript">
+        function roomdel(roomid) {
+            $.ajax({
+                url: '/admin_zufangdel',
+                type: 'GET',
+                data: {"room_id": roomid},
+                dataType: 'json',
+
+                success: function (data) {
+                    rents = data.id;
+                    if (rents == true) {
+                        alert("删除成功");
+                        parent.location.href = '/admin_zufang'
+
+                    } else {
+                        alert("删除失败");
+                    }
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+        }
+    </script>
+    <!-- /. PAGE WRAPPER  -->
+{% endblock %}
